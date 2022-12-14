@@ -1,0 +1,19 @@
+webhook-url: "https://discord.com/api/webhooks/1048174493304098857/ega094HICmNgV0wjVj4sFAvymwF6sCv3QN1SfReXO3OEwyOnA7-qVlX8Fzv4ZZYNpTRa"
+
+towny:
+  create-town:
+    enabled: true
+  delete-town:
+    enabled: true
+  join-town:
+    enabled: true
+  leave-town:
+    enabled: true
+  add-enemy:
+    enabled: true
+  remove-enemy:
+    enabled: true
+  add-ally:
+    enabled: true
+  remove-ally:
+    enabled: true

@@ -1,0 +1,9 @@
+name: TownyWebhooks
+version: '${project.version}'
+main: com.tr.denizusta.townywebhooks.Main
+api-version: 1.16
+loadbefore: [ Towny ]
+depend: [ Towny ]
+authors: [ sheduxdev ]
+description: Discord sunucunuzu, Towny sunucunuzda yapılan eylemlerden haberdar edin.
+website: https://foudrestudios.com
