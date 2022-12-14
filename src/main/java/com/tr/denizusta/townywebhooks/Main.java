@@ -48,7 +48,7 @@ public final class Main extends JavaPlugin implements Listener {
             Date now = new Date();
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Yeni bir kasaba belirdi!").addField("Kasaba Adı",event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Kurulma Tarihi", format.format(now), true));
+            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.green).setTitle("\uD83D\uDC51 | Yeni bir kasaba belirdi!").addField("Kasaba Adı",event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Kurulma Tarihi", format.format(now), true));
             try {
                 discordWebhook.execute();
             } catch (IOException e) {
@@ -62,7 +62,7 @@ public final class Main extends JavaPlugin implements Listener {
             Date now = new Date();
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Bir kasaba aramızdan ayrıldı...").addField("Kasaba Adı",event.getTownName(), true).addField("Kasaba Başkanı", event.getMayor().getName(), true).addField("Kapanma Tarihi", format.format(now), true));
+            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.red).setTitle("\uD83E\uDEA6 | Bir kasaba aramızdan ayrıldı...").addField("Kasaba Adı",event.getTownName(), true).addField("Kasaba Başkanı", event.getMayor().getName(), true).addField("Kapanma Tarihi", format.format(now), true));
             try {
                 discordWebhook.execute();
             } catch (IOException e) {
@@ -79,7 +79,7 @@ public final class Main extends JavaPlugin implements Listener {
                         Date now = new Date();
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                         Webhook discordWebhook = new Webhook(webhookURL);
-                        discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle(event.getResident().getName() + " bir kasabaya katıldı.").addField("Katıldığı Kasaba", event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Katıldığı Tarih", format.format(now), true));
+                        discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.green).setTitle("\uD83D\uDCE5 | "+event.getResident().getName() + " bir kasabaya katıldı.").addField("Katıldığı Kasaba", event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Katıldığı Tarih", format.format(now), true));
                         try {
                             discordWebhook.execute();
                         } catch (IOException e) {
@@ -100,7 +100,7 @@ public final class Main extends JavaPlugin implements Listener {
                         Date now = new Date();
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                         Webhook discordWebhook = new Webhook(webhookURL);
-                        discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle(event.getResident().getName() + " bulunduğu kasabadan ayrıldı.").addField("Ayrıldığı Kasaba", event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Ayrıldığı Tarih", format.format(now), true));
+                        discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.red).setTitle("\uD83D\uDCE4 | "+event.getResident().getName() + " bulunduğu kasabadan ayrıldı.").addField("Ayrıldığı Kasaba", event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Ayrıldığı Tarih", format.format(now), true));
                         try {
                             discordWebhook.execute();
                         } catch (IOException e) {
