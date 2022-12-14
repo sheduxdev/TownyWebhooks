@@ -9,11 +9,3 @@ towny:
     enabled: true
   leave-town:
     enabled: true
-  add-enemy:
-    enabled: true
-  remove-enemy:
-    enabled: true
-  add-ally:
-    enabled: true
-  remove-ally:
-    enabled: true

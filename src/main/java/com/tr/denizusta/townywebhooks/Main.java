@@ -1,9 +1,6 @@
 package com.tr.denizusta.townywebhooks;
 
-import com.palmergames.bukkit.towny.event.DeleteTownEvent;
-import com.palmergames.bukkit.towny.event.NewTownEvent;
-import com.palmergames.bukkit.towny.event.PlayerEnterTownEvent;
-import com.palmergames.bukkit.towny.event.PlayerLeaveTownEvent;
+import com.palmergames.bukkit.towny.event.*;
 import com.palmergames.bukkit.towny.event.town.TownAddAlliedTownEvent;
 import com.palmergames.bukkit.towny.event.town.TownAddEnemiedTownEvent;
 import com.palmergames.bukkit.towny.event.town.TownRemoveAlliedTownEvent;
@@ -65,7 +62,7 @@ public final class Main extends JavaPlugin implements Listener {
             Date now = new Date();
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Bir kasaba aramızdan ayrıldı...").addField("Kasaba Adı",event.getTownName(), true).addField("Kasaba Başkanı", event.getMayor().getName(), true).addField("Yıkılma Tarihi", format.format(now), true));
+            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Bir kasaba aramızdan ayrıldı...").addField("Kasaba Adı",event.getTownName(), true).addField("Kasaba Başkanı", event.getMayor().getName(), true).addField("Kapanma Tarihi", format.format(now), true));
             try {
                 discordWebhook.execute();
             } catch (IOException e) {
@@ -74,80 +71,44 @@ public final class Main extends JavaPlugin implements Listener {
         }
     }
     @EventHandler
-    public void joinTown(PlayerEnterTownEvent event) {
-        if(Config.joinTown == true) {
-            Date now = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle(event.getPlayer().getName()+" bir kasabaya katıldı.").addField("Katıldığı Kasaba",event.getEnteredtown().getName(), true).addField("Kasaba Başkanı", event.getEnteredtown().getMayor().getName(), true).addField("Katıldığı Tarih", format.format(now), true));
-            try {
-                discordWebhook.execute();
-            } catch (IOException e) {
-                getLogger().severe(e.getStackTrace().toString());
+    public void joinTown(TownAddResidentEvent event) {
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+            public void run(){
+                if(Config.joinTown == true) {
+                    if(!(event.getTown().getMayor().getName() == event.getResident().getName())) {
+                        Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Webhook discordWebhook = new Webhook(webhookURL);
+                        discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle(event.getResident().getName() + " bir kasabaya katıldı.").addField("Katıldığı Kasaba", event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Katıldığı Tarih", format.format(now), true));
+                        try {
+                            discordWebhook.execute();
+                        } catch (IOException e) {
+                            getLogger().severe(e.getStackTrace().toString());
+                        }
+                    }
+                }
             }
-        }
+        }, 20);
     }
     @EventHandler
-    public void leaveTown(PlayerLeaveTownEvent event) {
-        if(Config.leaveTown == true) {
-            Date now = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle(event.getPlayer().getName()+" bulunduğu kasabadan ayrıldı.").addField("Ayrıldığı Kasaba",event.getLefttown().getName(), true).addField("Kasaba Başkanı", event.getLefttown().getMayor().getName(), true).addField("Ayrıldığı Tarih", format.format(now), true));
-            try {
-                discordWebhook.execute();
-            } catch (IOException e) {
-                getLogger().severe(e.getStackTrace().toString());
-            }
-        }
-    }
-    @EventHandler
-    public void addTownEnemy(TownAddEnemiedTownEvent event) {
-        if(Config.addTownEnemy == true) {
-            Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Sanırım bir şeyler ters dönüyor...").setDescription("**"+event.getTown().getName()+"** kasabası **"+event.getNewEnemy().getName()+"** kasabasını düşmanı olarak belirledi."));
-            try {
-                discordWebhook.execute();
-            } catch (IOException e) {
-                getLogger().severe(e.getStackTrace().toString());
-            }
-        }
-    }
-    @EventHandler
-    public void removeTownEnemy(TownRemoveEnemiedTownEvent event) {
-        if(Config.removeTownEnemy == true) {
-            Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Eski dostları yeniden bir arada görmek güzel...").setDescription("**"+event.getTown().getName()+"** kasabası **"+event.getRemovedEnemy().getName()+"** kasabası ile barış yaptı."));
-            try {
-                discordWebhook.execute();
-            } catch (IOException e) {
-                getLogger().severe(e.getStackTrace().toString());
-            }
-        }
-    }
-    @EventHandler
-    public void addTownAlly(TownAddAlliedTownEvent event) {
-        if(Config.addTownAlly == true) {
-            Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Sanırsam ittifaklar toplanıyor...").setDescription("**"+event.getTown().getName()+"** kasabası **"+event.getNewAlly().getName()+"** kasabasını ittifak olarak belirledi."));
-            try {
-                discordWebhook.execute();
-            } catch (IOException e) {
-                getLogger().severe(e.getStackTrace().toString());
-            }
-        }
-    }
-    @EventHandler
-    public void removeTownAlly(TownRemoveAlliedTownEvent event) {
-        if(Config.removeTownAlly == true) {
-            Webhook discordWebhook = new Webhook(webhookURL);
-            discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle("Ters giden bir şey var...").setDescription("**"+event.getTown().getName()+"** kasabası **"+event.getRemovedAlly().getName()+"** kasabasını ittifaklıktan çıkardı."));
-            try {
-                discordWebhook.execute();
-            } catch (IOException e) {
-                getLogger().severe(e.getStackTrace().toString());
-            }
-        }
-    }
+    public void leaveTown(TownRemoveResidentEvent event) {
 
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+            public void run(){
+                if (Config.leaveTown == true) {
+                    if(!(event.getTown().getMayor().getName() == event.getResident().getName())) {
+                        Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Webhook discordWebhook = new Webhook(webhookURL);
+                        discordWebhook.addEmbed(new Webhook.EmbedObject().setColor(Color.orange).setTitle(event.getResident().getName() + " bulunduğu kasabadan ayrıldı.").addField("Ayrıldığı Kasaba", event.getTown().getName(), true).addField("Kasaba Başkanı", event.getTown().getMayor().getName(), true).addField("Ayrıldığı Tarih", format.format(now), true));
+                        try {
+                            discordWebhook.execute();
+                        } catch (IOException e) {
+                            getLogger().severe(e.getStackTrace().toString());
+                        }
+                    }
+                }
+            }
+        }, 20);
+    }
 }
